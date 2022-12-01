@@ -2,7 +2,7 @@ import words_fetcher
 import random
 
 
-def congratulate_user():
+def congratulate_user(guesses):
     print(f"Congratulations, you won! your words: {guesses}")
     print("=============================")
     print("= Congratulations! You won! =")
@@ -13,15 +13,17 @@ def is_game_over():
     return guessed == WORDS_TO_WIN or errors == ERRORS_TO_LOSE
 
 
-def guess_is_valid(candidate):
+def guess_is_valid(candidate, errors):
     for letter in candidate:
         if letter not in word:
             print(f"You can not use letter {letter}")
-            return False
+            errors += 1
+            return False, errors
         count = word.count(letter)
         if count < candidate.count(letter):
             print(f"You can use letter {letter} only {count} times")
-            return False
+            errors += 1
+            return False, errors
     return True
 
 
@@ -51,9 +53,12 @@ while not is_game_over():
         guessed += 1
         guesses.append(guess)
         if guessed == WORDS_TO_WIN:
-            congratulate_user()
+            congratulate_user(guesses)
             exit()
         print(f"That's right! {WORDS_TO_WIN - guessed} to go")
+    if guess in guesses:
+        print("you already used this word")
+        errors += 1
     else:
         errors += 1
         print(f"Oops :( No such word, you have {ERRORS_TO_LOSE - errors} lives more")
