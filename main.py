@@ -9,7 +9,9 @@ def congratulate_user(guesses):
     print("=============================")
 
 
-def is_game_over():
+def is_game_over(errors):
+    if errors == 3:
+        print("you lost")
     return guessed == WORDS_TO_WIN or errors == ERRORS_TO_LOSE
 
 
@@ -43,10 +45,10 @@ print(f"Can you make up {WORDS_TO_WIN} words from letters in word provided by me
 print(f"Your word is '{word}'")
 
 
-while not is_game_over():
+while not is_game_over(errors):
     guess = input("Your next take: ")
 
-    if not guess_is_valid(guess):
+    if not guess_is_valid(guess, errors):
         continue
 
     if guess in full_list:
